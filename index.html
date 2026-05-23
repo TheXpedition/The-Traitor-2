@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Xpedition Presents: The Traitor 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#2a0004"/>
+<style>
+:root{ --bg:#180106; --bg-2:#2b0006; --gold:#f1d38a; --ink:#e9e2dc; --venom:#27c76f; --shadow:rgba(0,0,0,.65) }
+*{box-sizing:border-box}
+html,body{height:100%}
+/* Knife cursor global */
+html, body, a, button, .btn, .cta-sound, .card, .avatar, * { cursor: url('assets/knife.png') 0 0, auto; }
+body{
+  margin:0;
+  background:
+    radial-gradient(1000px 600px at 30% 0%, #3d0009 0%, transparent 60%),
+    radial-gradient(900px 600px at 70% 100%, #220005 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color:var(--ink);
+  font-family: "Cormorant Garamond", serif;
+  line-height:1.45;
+  overflow-x:hidden;
+}
+body.gated{ overflow:hidden; }
+img{max-width:100%; display:block}
+.container{max-width:1200px; margin:0 auto; padding:24px 18px}
+.gold-emboss{font-family:"Cinzel",serif; letter-spacing:.08em; text-transform:uppercase; color:var(--gold);
+  text-shadow:0 1px 0 #fff2,0 2px 6px #0009,0 0 30px rgba(255,228,134,.08),0 0 70px rgba(255,215,128,.05)}
+
+/* Header */
+.header{position:relative; display:flex; gap:18px; align-items:center; justify-content:space-between;
+  padding:16px 18px; border-bottom:1px solid #ffffff1a; background:linear-gradient(180deg,#25000677,#0000); backdrop-filter:blur(6px)}
+.brand{display:flex; align-items:center; gap:14px}
+.brand img{height:72px; width:auto; filter:drop-shadow(0 8px 16px var(--shadow))}
+.title-wrap h1{font-size:28px; margin:0;}
+.title-wrap .kicker{font-size:14px; opacity:.85; letter-spacing:.1em}
+.header-actions{display:flex; gap:10px; align-items:center}
+.cta-sound,.cta-home{display:flex; gap:10px; align-items:center; border:1px solid #ffffff22; background:#0000003a; color:#fff;
+  padding:10px 14px; border-radius:10px; cursor:pointer; box-shadow:inset 0 0 0 1px #ffffff12; text-decoration:none}
+.cta-sound[aria-pressed="true"]{box-shadow: inset 0 0 0 2px #caa44e88;}
+.cta-sound:hover,.cta-home:hover{background:#00000055}
+
+.hero{ padding:20px 0 10px }
+.hero img{ width:100%; max-height:64vh; object-fit:cover; border-radius:18px; box-shadow:0 30px 60px var(--shadow) }
+
+.divider{ margin:28px auto; height:2px; width:min(720px,90%); background:linear-gradient(90deg,transparent,var(--gold),transparent); position:relative }
+.divider::after{ content:""; position:absolute; left:50%; transform:translateX(-50%); width:180px; height:36px; background:radial-gradient(closest-side,#f7e9b4 20%,#0000 70%); filter:blur(6px); opacity:.4; top:-18px }
+
+/* Panel base */
+.panel{ max-width:auto; margin:1 auto; background:linear-gradient(180deg,#0b0004cc,#0b000480); border:1px solid #ffffff20; border-radius:18px; padding:22px; box-shadow:0 30px 80px rgba(0,0,0,.55) }
+
+/* Pestañas de Grupos (Poker) */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0 30px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: linear-gradient(180deg, #180106, #0b0003);
+  border: 1px solid #ffffff22;
+  color: var(--gold);
+  padding: 12px 20px;
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn.active, .tab-btn:hover {
+  background: linear-gradient(180deg, #4a0008, #2b0006);
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(241, 211, 138, 0.3);
+  transform: translateY(-2px);
+}
+.tab-btn .icon { font-size: 20px; }
+.tab-btn.joker-tab { font-weight: 800; letter-spacing: 0.1em; color: #fff; }
+
+/* Contenedor de grilla (Filas centradas) */
+#grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.card-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Tarjetas */
+.card{ position:relative; width:190px; flex-shrink: 0; border-radius:16px; padding:10px; background:linear-gradient(180deg,#150006,#29000a);
+  border:1px solid #ffffff1a; box-shadow:0 10px 30px var(--shadow); overflow:hidden; cursor:pointer }
+.card .avatar{ position:relative; height:220px; border-radius:12px; background:#0c0003; border:1px solid #ffffff1a; overflow:hidden; z-index:0; touch-action:manipulation }
+.card .avatar img{ position:relative; z-index:0; width:100%; height:100%; object-fit:cover }
+.card .name{ margin:10px 0 2px; font-weight:700; letter-spacing:.04em; font-size:18px; text-align:center }
+.card .rol{ margin:2px 0; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; text-align:center }
+.card .estado, .card .causa{ margin:0; opacity:.95; text-align:center; font-size: 15px; }
+.card .estado{ font-weight:700 }
+
+/* Colores por Rol */
+.color-rojo { color: #d63a3a; }
+.color-gris { color: #cccccc; }
+.color-amarillo { color: #f1d38a; }
+
+.estado.alive{ color:#27c76f }
+.estado.dead{ color:#d63a3a }
+.card .mark{ position:absolute; right:8px; bottom:8px; font-size:22px; filter:drop-shadow(0 2px 2px #0009); z-index:3 }
+.card:focus-within .fx{ opacity:1 }
+
+@media (max-width:600px){ 
+  .card{ width: calc(50% - 8px); }
+}
+@media (max-width:400px){ 
+  .card{ width: 100%; max-width: 260px; }
+}
+
+.monogram{ display:grid; place-items:center; height:100%; width:100%; font-family:"Cinzel",serif; font-size:64px; color:#fff; opacity:.9; background:#120007; text-shadow:0 4px 10px #000a }
+
+/* FX */
+.fx{ position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .25s ease; z-index:2 }
+.card:hover .fx, .card.active .fx, .card .avatar:hover .fx{ opacity:1 }
+.fx-glow::before{ content:""; position:absolute; inset:-25%; background:radial-gradient(closest-side, rgba(255,215,128,.45), transparent 65%); filter: blur(12px); animation: pulse 1.6s ease-in-out infinite }
+@keyframes pulse{ 0%,100%{transform:scale(.9)} 50%{transform:scale(1.1)} }
+.fx-missing::after{ content:"?"; position:absolute; inset:0; display:grid; place-items:center; font-family:"Cinzel", serif; font-size:120px; color:#fff; text-shadow: 0 0 18px #fff8, 0 0 60px #fff6; animation: flicker 1.6s infinite }
+@keyframes flicker{ 0%,100%{opacity:.25} 45%{opacity:.85} 50%{opacity:.35} 60%{opacity:.9} }
+.fx-fire{ overflow:hidden }
+.fx-fire::before, .fx-fire::after{ content:""; position:absolute; left:-10%; right:-10%; bottom:-25%; height:60%;
+  background:radial-gradient(60px 30px at 10% 90%, #ffcb52aa, transparent 70%),radial-gradient(70px 36px at 30% 85%, #ffad33cc, transparent 70%),radial-gradient(70px 34px at 50% 95%, #ff7a1fcc, transparent 70%),radial-gradient(60px 30px at 70% 90%, #ffcb52aa, transparent 70%),radial-gradient(80px 38px at 90% 88%, #ffaa00cc, transparent 70%);
+  filter: blur(6px) contrast(1.2); animation: flames 1.2s linear infinite }
+.fx-fire::after{ background:radial-gradient(60px 30px at 15% 95%, #ffd58ecc, transparent 70%),radial-gradient(70px 36px at 35% 92%, #ffbf58cc, transparent 70%),radial-gradient(70px 34px at 55% 100%, #ff9d3acc, transparent 70%),radial-gradient(60px 30px at 75% 94%, #ffd58ecc, transparent 70%),radial-gradient(80px 38px at 95% 92%, #ffc56bcc, transparent 70%); animation: flames 1.6s linear infinite reverse; opacity:.9 }
+@keyframes flames{ 0%{ transform:translateY(20%) } 100%{ transform:translateY(-10%) } }
+.fx-blood::before{ content:""; position:absolute; inset:-2% -2% 20% -2%;
+  background:radial-gradient(40px 20px at 20% 20%, #9e0f17, transparent 70%),radial-gradient(30px 18px at 50% 35%, #8d0d15, transparent 70%),radial-gradient(34px 16px at 75% 25%, #7c0c13, transparent 70%); filter: blur(1px); opacity:.95 }
+.fx-blood::after{ content:""; position:absolute; left:8%; width:10px; top:0; bottom:-30%; background: linear-gradient(#8c0d14, #3d0407); border-radius:8px; filter: blur(.3px); animation: drip 1.8s ease-in-out infinite }
+@keyframes drip{ 0%{ transform: translateY(-120%); opacity:0 } 15%{ opacity:1 } 70%{ transform: translateY(20%) } 100%{ opacity:0 } }
+.fx-venom::before{ content:""; position:absolute; left:-8%; right:-8%; top:-30%; height:60%;
+  background:radial-gradient(60px 30px at 20% 10%, #54ffb0cc, transparent 70%),radial-gradient(70px 36px at 40% 12%, #31e78fcc, transparent 70%),radial-gradient(70px 34px at 65% 8%,  #20d67fcc, transparent 70%),radial-gradient(60px 30px at 85% 14%, #54ffb0cc, transparent 70%);
+  filter: blur(6px) saturate(120%); animation: ooze 2.2s ease-in-out infinite }
+.fx-venom::after{ content:""; position:absolute; left:18%; top:-10%; width:10px; bottom:60%; background: linear-gradient(#27c76f, #0a3b23); border-radius:8px; filter: blur(.3px); animation: ooze 2.2s ease-in-out infinite reverse }
+
+.footer{ text-align:center; padding:20px 0 50px; opacity:.8; font-size:14px }
+
+/* Track record */
+.track{ margin:40px auto 80px; border-top:1px solid #ffffff22; padding-top:18px }
+.track .board{ min-height:220px; border:1px dashed #ffffff33; border-radius:12px; display:grid; place-items:center; padding:20px; color:#ffffffaa; transition: opacity 0.3s; }
+.track .board img{ max-width:100%; height:auto; display:block }
+
+/* Gate + Doors */
+#gate{ position:fixed; inset:0; background: radial-gradient(1200px 800px at 50% 30%, #3a000d, #0b0003); display:grid; place-items:center; z-index:1000; color:#fff; }
+.gate-card{ text-align:center; max-width:720px; padding:28px; border-radius:18px; background:#0b0004cc; border:1px solid #ffffff22; box-shadow:0 30px 80px var(--shadow) }
+.gate-card h2{ font-size:34px }
+.btn{ display:inline-block; padding:12px 18px; border-radius:10px; border:1px solid #caa44e88; background:linear-gradient(180deg,#3a1d00,#1a0d00); color:#f7e9b4; font-weight:700; letter-spacing:.08em; text-transform:uppercase; cursor:pointer }
+.btn:hover{ filter:brightness(1.1) } .btn:active{ transform:translateY(1px) }
+
+#doors{ position:fixed; inset:0; display:none; z-index:1200; pointer-events:none; }
+#doors .panel{ position:absolute; top:0; width:50%; height:100%; background: linear-gradient(180deg, #2b0007, #120003); box-shadow: inset 0 0 120px #000a, 0 0 40px #000a; border:1px solid #5a1a22; will-change: transform; }
+#doors .left{ left:0; border-right:1px solid #5a1a22; transform:translateX(0); }
+#doors .right{ right:0; border-left:1px solid #5a1a22; transform:translateX(0); }
+#doors.open .left{ animation: openLeft 1.2s ease forwards }
+#doors.open .right{ animation: openRight 1.2s ease forwards }
+@keyframes openLeft{ 0%{ transform: translateX(0) } 100%{ transform: translateX(-100%) } }
+@keyframes openRight{ 0%{ transform: translateX(0) } 100%{ transform: translateX(100%) } }
+
+/* Lightbox */
+.lightbox{ position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.86); z-index:1400 }
+.lightbox.open{ display:grid }
+.lb-inner{ position:relative; width:min(58vw, 520px) }
+@media (max-width: 700px){ .lb-inner{ width:92vw } }
+.lb-img{ width:100%; max-height:56vh; object-fit:contain; border-radius:16px; box-shadow:0 30px 80px #000; display:block; background:#000 }
+.lb-close{ position:absolute; top:-14px; right:-14px; width:44px; height:44px; border-radius:50%; background:#1b0a0e; border:1px solid #ffffff33; color:#fff; display:grid; place-items:center; font-size:20px; cursor:pointer }
+.lb-legend{ margin-top:14px; background:#0b0008; border:1px solid #ffffff22; border-radius:12px; padding:14px 16px }
+.lb-name{ font-family:"Cinzel",serif; font-size:22px; letter-spacing:.06em; text-align:center }
+.lb-rol{ font-family:"Cinzel",serif; font-size:16px; letter-spacing:0.1em; text-align:center; margin-top: 4px; font-weight: bold; text-transform: uppercase; }
+.lb-estado{ font-size:26px; font-weight:800; margin:.3rem 0; text-align:center }
+.lb-causa{ opacity:.9; text-align:center }
+.status-alive{ color:#27c76f; text-shadow:0 0 12px rgba(39,199,111,.4) }
+.status-dead{ color:#d63a3a }
+.status-missing{ color:#fff; text-shadow:0 0 14px #fff8 }
+@keyframes textReveal{ 0%{ letter-spacing:.6em; opacity:0; filter:blur(3px) } 60%{ letter-spacing:.12em; opacity:.9; filter:blur(0) } 100%{ letter-spacing:.06em; opacity:1 } }
+.reveal{ animation: textReveal .9s ease both; }
+
+/* Overlay de LOGO al entrar */
+#logoOverlay{ position:fixed; inset:0; display:none; place-items:center; z-index:1300; pointer-events:none; }
+#logoOverlay.show{ display:grid; }
+#logoOverlay .logo{ width:min(70vw, 700px); max-width:700px; filter:drop-shadow(0 20px 80px #0008); opacity:0; transform:scale(.96); transition:opacity .5s ease, transform .6s ease; }
+#logoOverlay.show .logo{ opacity:1; transform:scale(1); }
+#logoOverlay.fade .logo{ opacity:0; filter:blur(2px); transition: opacity .8s ease, filter .8s ease; }
+</style>
+</head>
+<body class="gated">
+<header class="header container">
+  <div class="brand">
+    <img src="The Traitor 1 Logo Color.png" alt="The Traitor Logo" onerror="this.style.display='none'"/>
+    <div class="title-wrap">
+      <div class="kicker gold-emboss">The Xpedition Presents:</div>
+      <h1 class="gold-emboss">The Traitor 2</h1>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="cta-sound" id="toggleSound" aria-pressed="false" title="Música de fondo"><span>🔊</span><span>Sonido</span></button>
+    <a class="cta-home" id="homeBtn" href="https://thexpedition.github.io/The-Xpedition-Official/" target="_blank" rel="noopener">Inicio</a>
+  </div>
+</header>
+
+<main>
+  <section class="container hero">
+    <img src="The Traitor Portada.png" alt="Portada The Traitor 2" onerror="this.style.display='none'"/>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="container">
+    <div class="panel">
+      <h2 class="gold-emboss" style="text-align:center; margin-bottom: 0;">Grupos de la Mansión</h2>
+      
+      <div class="tabs-container">
+        <button class="tab-btn active" data-group="corazon"><span class="icon">♥️</span> Corazón</button>
+        <button class="tab-btn" data-group="espada"><span class="icon">♠️</span> Espada</button>
+        <button class="tab-btn" data-group="diamante"><span class="icon">♦️</span> Diamante</button>
+        <button class="tab-btn" data-group="trebol"><span class="icon">♣️</span> Trébol</button>
+        <button class="tab-btn joker-tab" data-group="joker"><span class="icon">🃏</span> JOKER</button>
+      </div>
+
+      <div id="grid"></div>
+    </div>
+  </section>
+
+  <section class="container track" id="track">
+    <div class="panel">
+      <h2 class="gold-emboss" style="text-align:center">Track Record</h2>
+      <div class="board"><img id="trackImg" src="" alt="Track Record"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer container">
+  <div>© The Xpedition — The Traitor 2</div>
+</footer>
+
+<audio id="bgAudio" src="audio/theme.mp3" preload="auto" loop></audio>
+
+<div id="gate"><div class="gate-card"><h2 class="gold-emboss">La mansión aguarda</h2><button id="enterBtn" class="btn">Entrar</button></div></div>
+<div id="doors"><div class="panel left"></div><div class="panel right"></div></div>
+
+<div id="logoOverlay" aria-hidden="true">
+  <img class="logo" src="The Traitor 1 Logo Transparente.png" alt="The Traitor Logo (overlay)">
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lb-inner">
+    <img class="lb-img" id="lbImg" alt=""/>
+    <button class="lb-close" id="lbClose" title="Cerrar">✕</button>
+    <div class="lb-legend">
+      <div class="lb-name" id="lbName"></div>
+      <div class="lb-rol" id="lbRol"></div>
+      <div class="lb-estado" id="lbEstado"></div>
+      <div class="lb-causa" id="lbCausa"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch(e){}
+window.addEventListener('load', ()=>{ window.scrollTo(0,0); const g=document.getElementById('gate'), d=document.getElementById('doors'); document.body.classList.add('gated'); if(d){d.classList.remove('open'); d.style.display='none'} if(g){g.style.display='grid'} });
+window.addEventListener('pageshow', ()=>{ window.scrollTo(0,0); const g=document.getElementById('gate'), d=document.getElementById('doors'), a=document.getElementById('bgAudio'); if(d){d.classList.remove('open'); d.style.display='none'} if(g){g.style.display='grid'} document.body.classList.add('gated'); if(a){ a.pause(); document.getElementById('toggleSound')?.setAttribute('aria-pressed','false') }});
+
+// Base de datos de Grupos organizados en filas perfectas
+const grupos = {
+  corazon: {
+    track: "assets/trackcorazon.png",
+    filas: [
+      [
+        {n:'Andrómeda', r:'Traidora', c:'Escapó en la Noche 7'},
+        {n:'Peggy', r:'Inocente', c:'Ejecutada en la Noche 7'},
+        {n:'Renata', r:'Cazadora', c:'Ejecutada en la Noche 7'},
+        {n:'Isabel', r:'Inocente', c:'Ejecutada en la Noche 7'},
+        {n:'Felix', r:'Inocente', c:'Ejecutado en la Noche 6'}
+      ],
+      [
+        {n:'Eduard', r:'Reclutado', c:'Ejecutado en la Noche 5'},
+        {n:'Vita', r:'Traidor', c:'Ejecutado en la Noche 4'},
+        {n:'Ivy', r:'Inocente', c:'Ejecutada en la Noche 3'},
+        {n:'Luciano', r:'Traidor', c:'Ejecutado en la Noche 2'},
+        {n:'Xina Ro', r:'Inocente', c:'Ejecutada en la Noche 1'}
+      ]
+    ]
+  },
+  espada: {
+    track: "assets/trackespada.png",
+    filas: [
+      [
+        {n:'Coronel', r:'Inocente', c:'Escapó en la Noche 6'},
+        {n:'Gabriel Sab', r:'Inocente', c:'Escapó en la Noche 6'},
+        {n:'Lucas Mendez', r:'Inocente', c:'Escapó en la Noche 6'},
+        {n:'Adriana Pereira', r:'Traidora', c:'Ejecutada en la Noche 6'}
+      ],
+      [
+        {n:'Bayron', r:'Reclutado', c:'Ejecutado en la Noche 5'},
+        {n:'Daelly', r:'Traidora', c:'Se suicidó en la Noche 5'},
+        {n:'Stalin Mango', r:'Inocente', c:'Ejecutado en la Noche 4'},
+        {n:'Christopher', r:'Traidor', c:'Ejecutado en la Noche 4'}
+      ],
+      [
+        {n:'Marianito', r:'Inocente', c:'Asesinado en la Noche 3'},
+        {n:'Julián', r:'Serial Killer', c:'Ejecutado en la Noche 2'},
+        {n:'Ivy', r:'Inocente', c:'Asesinada en la Noche 2'},
+        {n:'Anderson Moreno', r:'Inocente', c:'Asesinado en la Noche 1'}
+      ]
+    ]
+  },
+  diamante: {
+    track: "assets/trackdiamante.png",
+    filas: [
+      [
+        {n:'Alice', r:'Traidora', c:'Escapó en la Noche 6'},
+        {n:'Kim Camila', r:'Reclutada', c:'Escapó en la Noche 6'},
+        {n:'Renzo', r:'Traidor', c:'Escapó en la Noche 6'},
+        {n:'Pier', r:'Reclutado', c:'Ejecutado en la Noche 6'}
+      ],
+      [
+        {n:'Lalamila', r:'Traidora', c:'Ejecutada en la Noche 6'},
+        {n:'Leandro', r:'Inocente', c:'Ejecutado en la Noche 4'},
+        {n:'Ian Esteban', r:'Analista', c:'Asesinado en la Noche 4'},
+        {n:'Esteban', r:'Inocente', c:'Ejecutado en la Noche 3'}
+      ],
+      [
+        {n:'Paulis Queen', r:'Inocente', c:'Ejecutada en la Noche 2'},
+        {n:'Alexandro', r:'Inocente', c:'Asesinado en la Noche 2'},
+        {n:'Silvanya D\'Lemberth', r:'Serial Killer', c:'Ejecutada en la Noche 1'},
+        {n:'Elian', r:'Inocente', c:'Asesinado en la Noche 1'}
+      ]
+    ]
+  },
+  trebol: {
+    track: "assets/tracktrebol.png",
+    filas: [
+      [
+        {n:'Bruno Macri', r:'Inocente', c:'Escapó en la Noche 7'},
+        {n:'Greg', r:'Inocente', c:'Escapó en la Noche 7'},
+        {n:'Ivy', r:'Inocente', c:'Escapó en la Noche 7'},
+        {n:'Sophia Asdero', r:'Reclutada', c:'Ejecutada en la Noche 7'},
+        {n:'Nahuee', r:'Inocente', c:'Ejecutado en la Noche 7'}
+      ],
+      [
+        {n:'Ari Salgado', r:'Inocente', c:'Envenenado en la Noche 6'},
+        {n:'Marcos', r:'Inocente', c:'Ejecutado en la Noche 5'},
+        {n:'Azael', r:'Fantasma de la Ópera', c:'Ejecutado en la Noche 4'},
+        {n:'Beto', r:'Inocente', c:'Ejecutado en la Noche 4'},
+        {n:'Paula García', r:'Inocente', c:'Asesinada en la Noche 4'}
+      ],
+      [
+        {n:'Ivan Serrano', r:'Inocente', c:'Ejecutado en la Noche 3'},
+        {n:'Eris Midnight', r:'Inocente', c:'Ejecutado en la Noche 2'},
+        {n:'Samuel Gamert', r:'Inocente', c:'Asesinado en la Noche 2'},
+        {n:'Catalina', r:'Inocente', c:'Asesinada en la Noche 1'}
+      ]
+    ]
+  },
+  joker: {
+    track: "assets/trackjoker.png",
+    filas: [
+      [
+        {n:'Ari Salgado', r:'Inocente', c:'Escapó en la Noche 8'},
+        {n:'Isabel', r:'Inocente', c:'Escapó en la Noche 8'},
+        {n:'Mary Hao', r:'Inocente', c:'Escapó en la Noche 8'},
+        {n:'Alexandro', r:'Inocente', c:'Escapó en la Noche 8'}
+      ],
+      [
+        {n:'Bayron', r:'Traidor', c:'Ejecutado en la Noche 7'},
+        {n:'Stalin Mango', r:'Inocente', c:'Ejecutado en la Noche 6'},
+        {n:'Vita', r:'Inocente', c:'Ejecutado en la Noche 6'},
+        {n:'Leandro', r:'Inocente', c:'Ejecutado en la Noche 5'},
+        {n:'Peggy', r:'Inocente', c:'Ejecutada en la Noche 4'}
+      ],
+      [
+        {n:'Lalamila', r:'Traidora', c:'Ejecutada en la Noche 4'},
+        {n:'Doppel', r:'Inocente', c:'Ejecutada en la Noche 4'},
+        {n:'Nahuee', r:'Inocente', c:'Ejecutado en la Noche 3'},
+        {n:'Adriana Pereira', r:'Inocente', c:'Ejecutada en la Noche 2'},
+        {n:'Felix', r:'Inocente', c:'Ejecutado en la Noche 2'}
+      ]
+    ]
+  }
+};
+
+// Utilidades
+function slug(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'').trim() }
+function imageCandidates(name, groupId){
+  const base = slug(name);
+  return [
+    `Personajes/${name}_${groupId}.png`,
+    `Personajes/${name}_${groupId}.jpg`,
+    `Personajes/${base}_${groupId}.png`,
+    `Personajes/${base}_${groupId}.jpg`,
+    `Personajes/${name}.png`,
+    `Personajes/${name}.jpg`,
+    `Personajes/${base}.png`,
+    `Personajes/${base}.jpg`
+  ];
+}
+function tryLoad(el, cands){
+  let i=0;
+  function next(){
+    if(i>=cands.length){ el.innerHTML = `<div class="monogram">${(el.dataset.letter||'?')}</div>`; return; }
+    const img = new Image(); const src = cands[i++];
+    img.onload = ()=>{ el.innerHTML=''; el.appendChild(img) };
+    img.onerror = ()=> next(); img.src = src;
+  } next();
+}
+
+function processStatusInfo(c) {
+  let lower = c.toLowerCase();
+  if(lower.includes('escapó')) return { e: 'Sobreviviente', m: 'sobreviviente' };
+  if(lower.includes('ejecutad')) return { e: 'R.I.P', m: 'ejecutado' };
+  if(lower.includes('asesinad')) return { e: 'R.I.P', m: 'asesinado' };
+  if(lower.includes('suicid')) return { e: 'R.I.P', m: 'suicidio' };
+  if(lower.includes('envenenad')) return { e: 'R.I.P', m: 'envenenado' };
+  return { e: 'Desaparecido', m: 'desaparecido' };
+}
+
+function getRoleClass(r) {
+  let lower = r.toLowerCase();
+  if(lower.includes('traidor') || lower.includes('reclutad')) return 'color-rojo';
+  if(lower.includes('serial')) return 'color-gris';
+  if(lower.includes('ópera')) return 'color-gris';
+  return 'color-amarillo'; // Inocente, Cazador, Analista, Especialista
+}
+
+const mapFX = { sobreviviente:'fx-glow', desaparecido:'fx-missing', ejecutado:'fx-fire', asesinado:'fx-blood', suicidio:'fx-blood', envenenado:'fx-venom', cazador:'fx-blood' };
+const grid = document.getElementById('grid');
+
+// Función principal de renderizado por grupo
+function renderGroup(groupId) {
+  const groupData = grupos[groupId];
+  grid.innerHTML = ''; // Limpiar grilla actual
+  grid.style.opacity = 0;
+
+  groupData.filas.forEach(fila => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'card-row';
+
+    fila.forEach((p, index) => {
+      const statusObj = processStatusInfo(p.c);
+      
+      const card = document.createElement('article'); 
+      card.className='card'; 
+      card.setAttribute('tabindex','0'); 
+      card.setAttribute('role','button'); 
+
+      const avatar = document.createElement('div'); 
+      avatar.className='avatar'; 
+      avatar.dataset.letter=p.n.charAt(0).toUpperCase(); 
+tryLoad(avatar, imageCandidates(p.n, groupId));
+      card.appendChild(avatar);
+      
+      const fx = document.createElement('div'); 
+      fx.className='fx'; 
+      fx.classList.add(mapFX[statusObj.m] || 'fx-glow'); 
+      avatar.appendChild(fx);
+      
+      const name = document.createElement('h3'); 
+      name.className='name gold-emboss'; 
+      name.textContent=p.n; 
+      card.appendChild(name);
+
+      const rol = document.createElement('div');
+      rol.className = 'rol ' + getRoleClass(p.r);
+      rol.textContent = p.r;
+      card.appendChild(rol);
+
+      const estado = document.createElement('p'); 
+      estado.className='estado'; 
+      estado.textContent=statusObj.e; 
+      if(statusObj.e === 'Sobreviviente') estado.classList.add('alive'); else estado.classList.add('dead');
+      card.appendChild(estado);
+      
+      const causa = document.createElement('p'); 
+      causa.className='causa'; 
+      causa.textContent=p.c; 
+      card.appendChild(causa);
+      
+      if(statusObj.m==='asesinado'||statusObj.m==='suicidio'){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🔪'; card.appendChild(mark) }
+      if(p.r.toLowerCase().includes('cazador')){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🦌'; card.appendChild(mark) }
+
+      // Hover FX
+      const on = ()=> card.classList.add('active'); const off = ()=> card.classList.remove('active');
+      avatar.addEventListener('mouseenter', on); avatar.addEventListener('mouseleave', off);
+      card.addEventListener('mouseenter', on); card.addEventListener('mouseleave', off);
+
+      // Lightbox click
+      const openLB = ()=>{
+        const lb = document.getElementById('lightbox');
+        const imgTag = avatar.querySelector('img');
+        if(imgTag){ document.getElementById('lbImg').src = imgTag.src; document.getElementById('lbImg').alt = p.n; } 
+        else { document.getElementById('lbImg').removeAttribute('src'); document.getElementById('lbImg').alt=''; }
+        
+        document.getElementById('lbName').textContent = p.n;
+        
+        const lbRol = document.getElementById('lbRol');
+        lbRol.textContent = p.r;
+        lbRol.className = 'lb-rol ' + getRoleClass(p.r);
+        
+        const lbEstado = document.getElementById('lbEstado');
+        lbEstado.textContent = statusObj.e;
+        lbEstado.className = 'lb-estado reveal ' + (statusObj.e === 'Sobreviviente' ? 'status-alive' : 'status-dead');
+        
+        document.getElementById('lbCausa').textContent = p.c;
+        lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+      };
+      avatar.addEventListener('click', (e)=>{ e.stopPropagation(); openLB(); });
+      card.addEventListener('click', openLB);
+      avatar.addEventListener('touchstart', (e)=>{ e.stopPropagation(); openLB(); }, {passive:true});
+
+      // Animación de entrada escalonada
+      setTimeout(()=>{ card.classList.add('active'); setTimeout(()=>{ card.classList.remove('active'); }, 800); }, index * 80);
+
+      rowDiv.appendChild(card);
+    });
+
+    grid.appendChild(rowDiv);
+  });
+
+  // Cambiar track record
+  document.getElementById('trackImg').src = groupData.track;
+  
+  // Fade In suave de la grilla
+  setTimeout(()=> { grid.style.transition = 'opacity 0.4s'; grid.style.opacity = 1; }, 50);
+
+  // Actualizar clases active en pestañas
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.group === groupId);
+  });
+}
+
+// Inicializar pestañas
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => renderGroup(e.currentTarget.dataset.group));
+});
+
+// Renderizar grupo por defecto (Corazón)
+renderGroup('corazon');
+
+// Lightbox close
+const lb = document.getElementById('lightbox');
+document.getElementById('lbClose').addEventListener('click',()=>{ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true') });
+lb.addEventListener('click', (e)=>{ if(e.target===lb) { lb.classList.remove('open'); lb.setAttribute('aria-hidden','true') } });
+
+// Audio
+const audio = document.getElementById('bgAudio');
+document.getElementById('toggleSound').addEventListener('click', () => {
+  if(audio.paused){ audio.play().catch(()=>{}); document.getElementById('toggleSound').setAttribute('aria-pressed','true'); }
+  else { audio.pause(); document.getElementById('toggleSound').setAttribute('aria-pressed','false'); }
+});
+
+// Gate + doors + logo overlay
+const gate = document.getElementById('gate');
+const doors = document.getElementById('doors');
+const overlay = document.getElementById('logoOverlay');
+document.getElementById('enterBtn').addEventListener('click', () => {
+  audio.play().catch(()=>{});
+  document.getElementById('toggleSound').setAttribute('aria-pressed','true');
+
+  doors.style.display='block';
+  void doors.offsetWidth; 
+  doors.classList.add('open');
+
+  gate.style.display='none';
+  document.body.classList.remove('gated');
+
+  if(overlay){
+    overlay.className = 'show';
+    setTimeout(()=>{ overlay.classList.add('fade'); }, 900);
+    setTimeout(()=>{ overlay.style.display='none'; overlay.className=''; }, 1800);
+  }
+
+  setTimeout(()=>{ doors.style.display='none'; doors.classList.remove('open'); }, 1400);
+});
+</script>
+</body>
+</html>
