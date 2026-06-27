@@ -85,6 +85,12 @@ img{max-width:100%; display:block}
 .tab-btn .icon { font-size: 20px; }
 .tab-btn.joker-tab { font-weight: 800; letter-spacing: 0.1em; color: #fff; }
 
+/* Estilos de Efectos Especiales de las pestañas solicitadas */
+.tab-btn.final-tab { border-color: #ffd700; animation: goldPulse 2.5s infinite alternate; }
+.tab-btn.showdown-tab { background: linear-gradient(180deg, #4A1934, #1f0b16); color: #fff; border-color: #8c2a5f; }
+.tab-btn.showdown-tab.active, .tab-btn.showdown-tab:hover { background: linear-gradient(180deg, #641e43, #4A1934); box-shadow: 0 0 15px rgba(140, 42, 95, 0.6); border-color: #ff7ec4; }
+@keyframes goldPulse { 0% { box-shadow: 0 4px 12px rgba(0,0,0,0.5); } 100% { box-shadow: 0 0 14px rgba(255, 215, 0, 0.4); border-color: #fff; } }
+
 /* Contenedor de grilla (Filas centradas) */
 #grid {
   display: flex;
@@ -108,6 +114,29 @@ img{max-width:100%; display:block}
 .card .estado, .card .causa{ margin:0; opacity:.95; text-align:center; font-size: 15px; }
 .card .estado{ font-weight:700 }
 
+/* VARIANTES DE FILAS (Fina y Showdown) SIN ARRUINAR LAS CLASES GLOBALES */
+.row-5-cols .card { width: calc(20% - 13px); min-width: 170px; }
+.row-9-forced { display: flex; justify-content: space-between; gap: 10px; flex-wrap: nowrap !important; overflow-x: auto; padding: 10px 4px 20px; scrollbar-width: thin; }
+.row-9-forced .card { width: calc(11.11% - 9px); min-width: 110px; padding: 6px; background: linear-gradient(180deg, #1d0915, #2c0e20); border-color: rgba(140, 42, 95, 0.3); }
+.row-9-forced .card .avatar { height: 130px; }
+.row-9-forced .card .name { font-size: 14px; margin: 6px 0 2px; }
+
+/* Separadores de Bracket Limpios y Estilizados */
+.bracket-banner { width: 100%; text-align: center; margin: 30px 0 12px; }
+.bracket-banner span { font-family: "Cinzel", serif; font-size: 19px; color: #ff9eca; letter-spacing: 0.15em; padding: 4px 20px; background: linear-gradient(90deg, transparent, #4A1934 50%, transparent); display: inline-block; border-bottom: 1px solid rgba(255, 158, 202, 0.25); }
+
+/* Efectos de Ganadores y Cajas Ocultas */
+.winner-glow::before { content: ""; position: absolute; inset: -25%; background: radial-gradient(closest-side, rgba(255, 230, 120, 0.5), transparent 70%); filter: blur(10px); animation: winP 1.5s ease-in-out infinite alternate; }
+@keyframes winP { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 1; } }
+.star-ico { position: absolute; top: 6px; right: 6px; background: #caa44e; color: #110004; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: bold; box-shadow: 0 0 8px #ffd700; z-index: 4; }
+.mystery-solid { width: 100%; height: 100%; background: linear-gradient(135deg, #220b18, #4A1934); display: grid; place-items: center; font-family: "Cinzel", serif; color: rgba(255,255,255,0.1); font-size: 26px; }
+
+/* Contenedor Scroll Independiente Track Record Especial */
+.track-scrollable { max-height: 450px; overflow-y: auto; border: 1px solid #ffffff1a; border-radius: 12px; background: #070002; padding: 10px; width: 100%; box-shadow: inset 0 0 20px #000; }
+.minimal-download-area { display: flex; justify-content: flex-end; margin-top: 12px; }
+.btn-mini { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.45); padding: 3px 12px; font-size: 12px; font-family: "Cinzel", sans-serif; border-radius: 4px; cursor: pointer; text-transform: lowercase; }
+.btn-mini:hover { border-color: var(--gold); color: var(--gold); }
+
 /* Colores por Rol */
 .color-rojo { color: #d63a3a; }
 .color-gris { color: #cccccc; }
@@ -118,11 +147,12 @@ img{max-width:100%; display:block}
 .card .mark{ position:absolute; right:8px; bottom:8px; font-size:22px; filter:drop-shadow(0 2px 2px #0009); z-index:3 }
 .card:focus-within .fx{ opacity:1 }
 
-@media (max-width:600px){ 
-  .card{ width: calc(50% - 8px); }
+@media (max-width:950px){ .row-5-cols .card { width: calc(33.33% - 12px); } }
+@media (max-width:600px){  
+  .card, .row-5-cols .card { width: calc(50% - 8px); }
 }
-@media (max-width:400px){ 
-  .card{ width: 100%; max-width: 260px; }
+@media (max-width:400px){  
+  .card, .row-5-cols .card { width: 100%; max-width: 260px; }
 }
 
 .monogram{ display:grid; place-items:center; height:100%; width:100%; font-family:"Cinzel",serif; font-size:64px; color:#fff; opacity:.9; background:#120007; text-shadow:0 4px 10px #000a }
@@ -230,6 +260,8 @@ img{max-width:100%; display:block}
         <button class="tab-btn" data-group="diamante"><span class="icon">♦️</span> Diamante</button>
         <button class="tab-btn" data-group="trebol"><span class="icon">♣️</span> Trébol</button>
         <button class="tab-btn joker-tab" data-group="joker"><span class="icon">🃏</span> JOKER</button>
+        <button class="tab-btn final-tab" data-group="final"><span class="icon">👑</span> Final</button>
+        <button class="tab-btn showdown-tab" data-group="showdown"><span class="icon">⚔️</span> Showdown</button>
       </div>
 
       <div id="grid"></div>
@@ -239,7 +271,7 @@ img{max-width:100%; display:block}
   <section class="container track" id="track">
     <div class="panel">
       <h2 class="gold-emboss" style="text-align:center">Track Record</h2>
-      <div class="board"><img id="trackImg" src="" alt="Track Record"></div>
+      <div id="trackBox" class="board"><img id="trackImg" src="" alt="Track Record"></div>
     </div>
   </section>
 </main>
@@ -250,7 +282,7 @@ img{max-width:100%; display:block}
 
 <audio id="bgAudio" src="audio/theme.mp3" preload="auto" loop></audio>
 
-<div id="gate"><div class="gate-card"><h2 class="gold-emboss">La mansión aguarda</h2><button id="enterBtn" class="btn">Entrar</button></div></div>
+<div id="gate"><div class="gate-card"><h2 class="gold-emboss">La mansion aguarda</h2><button id="enterBtn" class="btn">Entrar</button></div></div>
 <div id="doors"><div class="panel left"></div><div class="panel right"></div></div>
 
 <div id="logoOverlay" aria-hidden="true">
@@ -275,7 +307,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 window.addEventListener('load', ()=>{ window.scrollTo(0,0); const g=document.getElementById('gate'), d=document.getElementById('doors'); document.body.classList.add('gated'); if(d){d.classList.remove('open'); d.style.display='none'} if(g){g.style.display='grid'} });
 window.addEventListener('pageshow', ()=>{ window.scrollTo(0,0); const g=document.getElementById('gate'), d=document.getElementById('doors'), a=document.getElementById('bgAudio'); if(d){d.classList.remove('open'); d.style.display='none'} if(g){g.style.display='grid'} document.body.classList.add('gated'); if(a){ a.pause(); document.getElementById('toggleSound')?.setAttribute('aria-pressed','false') }});
 
-// Base de datos de Grupos organizados en filas perfectas
+// Base de datos completa integrada sin alterar datos originales
 const grupos = {
   corazon: {
     track: "assets/trackcorazon.png",
@@ -391,6 +423,78 @@ const grupos = {
         {n:'Felix', r:'Inocente', c:'Ejecutado en la Noche 2'}
       ]
     ]
+  },
+  final: {
+    track: "assets/trackfinal.png",
+    esFinal: true,
+    filas: [
+      [
+        {n:'Bruno Macri', e:'WINNER', specialFx:'winner-glow'},
+        {n:'Lucas Mendez', e:'WINNER', specialFx:'winner-glow'},
+        {n:'Coronel', e:'3° Lugar'},
+        {n:'Ivy', e:'4° Lugar'},
+        {n:'Mary Hao', e:'5° Lugar'}
+      ],
+      [
+        {n:'Alice', e:'6° Lugar'},
+        {n:'Luciano', e:'7° Lugar'},
+        {n:'Dani', e:'8° Lugar'},
+        {n:'Isabel', e:'9° Lugar'},
+        {n:'Ari Salgado', e:'10° Lugar'}
+      ],
+      [
+        {n:'Pier', e:'11° Lugar'},
+        {n:'Peggy', e:'12° Lugar'},
+        {n:'Gabriel Sab', e:'13° Lugar'},
+        {n:'Iñaella Rose', e:'14° Lugar'},
+        {n:'Andromeda', e:'15° / 18° Lugar'}
+      ],
+      [
+        {n:'Alexandro', e:'15° / 18° Lugar'},
+        {n:'Greg', e:'15° / 18° Lugar'},
+        {n:'Anderson Moreno', e:'15° / 18° Lugar'}
+      ]
+    ]
+  },
+  showdown: {
+    track: "assets/trackshowdown.png",
+    esShowdown: true,
+    brackets: [
+      {
+        titulo: "Bracket 01",
+        p: [
+          {n:'Elias', foto:'Adriana Pereira', up:true},
+          {n:'Ari Salgado'}, {n:'Bayron', up:true}, {n:'Christopher', up:true},
+          {n:'Daelly'}, {n:'Esteban'}, {n:'Gabriel Sab'},
+          {n:'Julián'}, {n:'Mary Hao', up:true}
+        ]
+      },
+      {
+        titulo: "Bracket 02",
+        p: [
+          {n:'Coronel'}, {n:'Eduard', up:true}, {n:'Felix'},
+          {n:'Isabel'}, {n:'Ivy'}, {n:'Luciano', up:true},
+          {n:'Marcos'}, {n:'Marianito', up:true}, {n:'Sal Lua', foto:'Xina Ro', up:true}
+        ]
+      },
+      {
+        titulo: "Bracket 03",
+        p: [
+          {n:'Alice', up:true}, {n:'Andromeda'}, {n:'Bodega Bodeguita', up:true}, 
+          {n:'Carlos Harrington', up:true, color:'morado'}, {n:'Catalina', up:true},  
+          {n:'Greg'}, {n:'Leandro', up:true}, {n:'Peggy', up:true}, {n:'Renzo'}
+        ]
+      },
+      {
+        titulo: "Semi-Finales",
+        p: [
+          {n:'Bayron'}, {n:'Eduard'}, {n:'Elias', foto:'Adriana Pereira'},
+          {n:'Esteban'}, {n:'Luciano'}, {n:'Marianito'}, {n:'Mary Hao'},
+          {n:'Sal Lua', foto:'Xina Ro'}, {n:'Alice'}, {n:'Bodega Bodeguita'},
+          {n:'Carlos Harrington'}, {n:'Catalina'}, {n:'Leandro'}, {n:'Peggy'}
+        ]
+      }
+    ]
   }
 };
 
@@ -420,6 +524,7 @@ function tryLoad(el, cands){
 }
 
 function processStatusInfo(c) {
+  if(!c) return { e: '', m: '' };
   let lower = c.toLowerCase();
   if(lower.includes('escapó')) return { e: 'Sobreviviente', m: 'sobreviviente' };
   if(lower.includes('ejecutad')) return { e: 'R.I.P', m: 'ejecutado' };
@@ -430,108 +535,202 @@ function processStatusInfo(c) {
 }
 
 function getRoleClass(r) {
+  if(!r) return '';
   let lower = r.toLowerCase();
   if(lower.includes('traidor') || lower.includes('reclutad')) return 'color-rojo';
   if(lower.includes('serial')) return 'color-gris';
   if(lower.includes('ópera')) return 'color-gris';
-  return 'color-amarillo'; // Inocente, Cazador, Analista, Especialista
+  return 'color-amarillo';
 }
 
 const mapFX = { sobreviviente:'fx-glow', desaparecido:'fx-missing', ejecutado:'fx-fire', asesinado:'fx-blood', suicidio:'fx-blood', envenenado:'fx-venom', cazador:'fx-blood' };
 const grid = document.getElementById('grid');
+const trackBox = document.getElementById('trackBox');
 
-// Función principal de renderizado por grupo
+// Función principal de renderizado por grupo sin romper estilos antiguos
 function renderGroup(groupId) {
   const groupData = grupos[groupId];
-  grid.innerHTML = ''; // Limpiar grilla actual
+  grid.innerHTML = ''; 
   grid.style.opacity = 0;
 
-  groupData.filas.forEach(fila => {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'card-row';
+  // Restaurar el trackBox por defecto (sin scroll e imagen limpia)
+  trackBox.className = 'board';
+  trackBox.innerHTML = '<img id="trackImg" src="" alt="Track Record">';
 
-    fila.forEach((p, index) => {
-      const statusObj = processStatusInfo(p.c);
-      
-      const card = document.createElement('article'); 
-      card.className='card'; 
-      card.setAttribute('tabindex','0'); 
-      card.setAttribute('role','button'); 
-
-      const avatar = document.createElement('div'); 
-      avatar.className='avatar'; 
-      avatar.dataset.letter=p.n.charAt(0).toUpperCase(); 
-tryLoad(avatar, imageCandidates(p.n, groupId));
-      card.appendChild(avatar);
-      
-      const fx = document.createElement('div'); 
-      fx.className='fx'; 
-      fx.classList.add(mapFX[statusObj.m] || 'fx-glow'); 
-      avatar.appendChild(fx);
-      
-      const name = document.createElement('h3'); 
-      name.className='name gold-emboss'; 
-      name.textContent=p.n; 
-      card.appendChild(name);
-
-      const rol = document.createElement('div');
-      rol.className = 'rol ' + getRoleClass(p.r);
-      rol.textContent = p.r;
-      card.appendChild(rol);
-
-      const estado = document.createElement('p'); 
-      estado.className='estado'; 
-      estado.textContent=statusObj.e; 
-      if(statusObj.e === 'Sobreviviente') estado.classList.add('alive'); else estado.classList.add('dead');
-      card.appendChild(estado);
-      
-      const causa = document.createElement('p'); 
-      causa.className='causa'; 
-      causa.textContent=p.c; 
-      card.appendChild(causa);
-      
-      if(statusObj.m==='asesinado'||statusObj.m==='suicidio'){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🔪'; card.appendChild(mark) }
-      if(p.r.toLowerCase().includes('cazador')){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🦌'; card.appendChild(mark) }
-
-      // Hover FX
-      const on = ()=> card.classList.add('active'); const off = ()=> card.classList.remove('active');
-      avatar.addEventListener('mouseenter', on); avatar.addEventListener('mouseleave', off);
-      card.addEventListener('mouseenter', on); card.addEventListener('mouseleave', off);
-
-      // Lightbox click
-      const openLB = ()=>{
-        const lb = document.getElementById('lightbox');
-        const imgTag = avatar.querySelector('img');
-        if(imgTag){ document.getElementById('lbImg').src = imgTag.src; document.getElementById('lbImg').alt = p.n; } 
-        else { document.getElementById('lbImg').removeAttribute('src'); document.getElementById('lbImg').alt=''; }
+  // CASO NUEVO: FINAL (5 por fila)
+  if(groupData.esFinal) {
+    groupData.filas.forEach(fila => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'card-row row-5-cols';
+      fila.forEach(p => {
+        const card = document.createElement('article'); 
+        card.className='card';
         
-        document.getElementById('lbName').textContent = p.n;
-        
-        const lbRol = document.getElementById('lbRol');
-        lbRol.textContent = p.r;
-        lbRol.className = 'lb-rol ' + getRoleClass(p.r);
-        
-        const lbEstado = document.getElementById('lbEstado');
-        lbEstado.textContent = statusObj.e;
-        lbEstado.className = 'lb-estado reveal ' + (statusObj.e === 'Sobreviviente' ? 'status-alive' : 'status-dead');
-        
-        document.getElementById('lbCausa').textContent = p.c;
-        lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
-      };
-      avatar.addEventListener('click', (e)=>{ e.stopPropagation(); openLB(); });
-      card.addEventListener('click', openLB);
-      avatar.addEventListener('touchstart', (e)=>{ e.stopPropagation(); openLB(); }, {passive:true});
+        const avatar = document.createElement('div'); 
+        avatar.className='avatar';
+        avatar.dataset.letter=p.n.charAt(0).toUpperCase(); 
+        tryLoad(avatar, imageCandidates(p.n, groupId));
+        card.appendChild(avatar);
 
-      // Animación de entrada escalonada
-      setTimeout(()=>{ card.classList.add('active'); setTimeout(()=>{ card.classList.remove('active'); }, 800); }, index * 80);
+        const fx = document.createElement('div'); 
+        fx.className='fx ' + (p.specialFx || 'fx-glow'); 
+        avatar.appendChild(fx);
 
-      rowDiv.appendChild(card);
+        const name = document.createElement('h3'); 
+        name.className='name gold-emboss'; 
+        name.textContent=p.n; 
+        card.appendChild(name);
+
+        const estado = document.createElement('p'); 
+        estado.className='estado alive'; 
+        estado.textContent=p.e; 
+        card.appendChild(estado);
+
+        rowDiv.appendChild(card);
+      });
+      grid.appendChild(rowDiv);
     });
 
-    grid.appendChild(rowDiv);
-  });
+  // CASO NUEVO: SHOWDOWN (9 por fila forzada)
+  } else if(groupData.esShowdown) {
+    groupData.brackets.forEach(b => {
+      const banner = document.createElement('div');
+      banner.className = 'bracket-banner';
+      banner.innerHTML = `<span>${b.titulo}</span>`;
+      grid.appendChild(banner);
 
-  // Cambiar track record
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'card-row row-9-forced';
+
+      b.p.forEach(p => {
+        const card = document.createElement('article'); 
+        card.className='card';
+
+        if(p.up) {
+          const star = document.createElement('div');
+          star.className = 'star-ico';
+          star.textContent = '⭐';
+          card.appendChild(star);
+        }
+
+        const avatar = document.createElement('div'); 
+        avatar.className='avatar';
+        if(p.secret) {
+          avatar.innerHTML = `<div class="mystery-solid">?</div>`;
+        } else {
+          const lookName = p.foto || p.n;
+          avatar.dataset.letter = lookName.charAt(0).toUpperCase();
+          tryLoad(avatar, imageCandidates(lookName, groupId));
+        }
+        card.appendChild(avatar);
+
+        const name = document.createElement('h3'); 
+        name.className='name gold-emboss'; 
+        name.textContent=p.n; 
+        card.appendChild(name);
+
+        rowDiv.appendChild(card);
+      });
+      grid.appendChild(rowDiv);
+    });
+
+    // REQUERIMIENTO ESPECIAL SHOWDOWN: Caja con scroll para TR + Botón Minimalista sin alterar el DOM original estático
+    trackBox.className = 'track-scrollable';
+    trackBox.innerHTML = '<div class="board" style="border:none; padding:0;"><img id="trackImg" src="" alt="Track Record"></div>';
+    
+    const dArea = document.createElement('div');
+    dArea.className = 'minimal-download-area';
+    dArea.innerHTML = '<button class="btn-mini">descargar</button>';
+    trackBox.appendChild(dArea);
+
+  // LOGICA BASE ANTIGUA INTEGRAL (Corazón, Espada, Diamante, Trébol, Joker)
+  } else {
+    groupData.filas.forEach(fila => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'card-row';
+
+      fila.forEach((p, index) => {
+        const statusObj = processStatusInfo(p.c);
+        
+        const card = document.createElement('article'); 
+        card.className='card'; 
+        card.setAttribute('tabindex','0'); 
+        card.setAttribute('role','button'); 
+
+        const avatar = document.createElement('div'); 
+        avatar.className='avatar'; 
+        avatar.dataset.letter=p.n.charAt(0).toUpperCase(); 
+        tryLoad(avatar, imageCandidates(p.n, groupId));
+        card.appendChild(avatar);
+        
+        const fx = document.createElement('div'); 
+        fx.className='fx'; 
+        fx.classList.add(mapFX[statusObj.m] || 'fx-glow'); 
+        avatar.appendChild(fx);
+        
+        const name = document.createElement('h3'); 
+        name.className='name gold-emboss'; 
+        name.textContent=p.n; 
+        card.appendChild(name);
+
+        const rol = document.createElement('div');
+        rol.className = 'rol ' + getRoleClass(p.r);
+        rol.textContent = p.r;
+        card.appendChild(rol);
+
+        const estado = document.createElement('p'); 
+        estado.className='estado'; 
+        estado.textContent=statusObj.e; 
+        if(statusObj.e === 'Sobreviviente') estado.classList.add('alive'); else estado.classList.add('dead');
+        card.appendChild(estado);
+        
+        const causa = document.createElement('p'); 
+        causa.className='causa'; 
+        causa.textContent=p.c; 
+        card.appendChild(causa);
+        
+        if(statusObj.m==='asesinado'||statusObj.m==='suicidio'){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🔪'; card.appendChild(mark) }
+        if(p.r.toLowerCase().includes('cazador')){ const mark=document.createElement('div'); mark.className='mark'; mark.textContent='🦌'; card.appendChild(mark) }
+
+        // Hover FX
+        const on = ()=> card.classList.add('active'); const off = ()=> card.classList.remove('active');
+        avatar.addEventListener('mouseenter', on); avatar.addEventListener('mouseleave', off);
+        card.addEventListener('mouseenter', on); card.addEventListener('mouseleave', off);
+
+        // Lightbox click
+        const openLB = ()=>{
+          const lb = document.getElementById('lightbox');
+          const imgTag = avatar.querySelector('img');
+          if(imgTag){ document.getElementById('lbImg').src = imgTag.src; document.getElementById('lbImg').alt = p.n; } 
+          else { document.getElementById('lbImg').removeAttribute('src'); document.getElementById('lbImg').alt=''; }
+          
+          document.getElementById('lbName').textContent = p.n;
+          
+          const lbRol = document.getElementById('lbRol');
+          lbRol.textContent = p.r;
+          lbRol.className = 'lb-rol ' + getRoleClass(p.r);
+          
+          const lbEstado = document.getElementById('lbEstado');
+          lbEstado.textContent = statusObj.e;
+          lbEstado.className = 'lb-estado reveal ' + (statusObj.e === 'Sobreviviente' ? 'status-alive' : 'status-dead');
+          
+          document.getElementById('lbCausa').textContent = p.c;
+          lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+        };
+        avatar.addEventListener('click', (e)=>{ e.stopPropagation(); openLB(); });
+        card.addEventListener('click', openLB);
+        avatar.addEventListener('touchstart', (e)=>{ e.stopPropagation(); openLB(); }, {passive:true});
+
+        // Animación de entrada escalonada
+        setTimeout(()=>{ card.classList.add('active'); setTimeout(()=>{ card.classList.remove('active'); }, 800); }, index * 80);
+
+        rowDiv.appendChild(card);
+      });
+      grid.appendChild(rowDiv);
+    });
+  }
+
+  // Cambiar track record de forma limpia
   document.getElementById('trackImg').src = groupData.track;
   
   // Fade In suave de la grilla
